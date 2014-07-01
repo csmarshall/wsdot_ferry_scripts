@@ -43,9 +43,16 @@ def main():
 
 	args = parser.parse_args()
 
-	base_url= 'http://www.wsdot.wa.gov/Ferries/API/Terminals/rest/terminalsailingspace/%s?apiaccesscode=%s' % (args.ferry_terminal, args.api_key)
+	base_url = 'http://www.wsdot.wa.gov/Ferries/API/Terminals/rest/terminalsailingspace/%s?apiaccesscode=%s' % (args.ferry_terminal, args.api_key)
 
-	print simplejson.loads((urllib2.urlopen(urllib2.Request(base_url))).read())['DepartingSpaces'][0]['SpaceForArrivalTerminals'][0]['DriveUpSpaceCount']
+	try:
+		response = urllib2.urlopen(urllib2.Request(base_url)).read()
+		print simplejson.loads(response)['DepartingSpaces'][0]['SpaceForArrivalTerminals'][0]['DriveUpSpaceCount']
+	except:
+		print -1
+		sys.exit(1)
+
+	#print simplejson.loads((urllib2.urlopen(urllib2.Request(base_url))).read())['DepartingSpaces'][0]['SpaceForArrivalTerminals'][0]['DriveUpSpaceCount']
 
 if __name__ == "__main__":
     main()
