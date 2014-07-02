@@ -47,6 +47,8 @@ def main():
 
 	try:
 		response = urllib2.urlopen(urllib2.Request(base_url)).read()
+		from_terminal = response['TerminalName']
+		to_terminal = 
 		print simplejson.loads(response)['DepartingSpaces'][0]['SpaceForArrivalTerminals'][0]['DriveUpSpaceCount']
 	except:
 		print -1
