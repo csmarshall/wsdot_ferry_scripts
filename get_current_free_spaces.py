@@ -39,10 +39,10 @@ def main():
                 '20    Southworth\n'
                 '21    Tahlequah\n'
                 '22    Vashon Island\n\n'
-                'Current return codes\n'
-                '-1 - WSDOT Api returned a non-2xx response\n'
-                '-2 - Terminal Data returned does not match requested\n'
-                '-3 - Destination given is not in requested terminal\n'
+                'Current exit codes\n'
+                '1 - WSDOT Api returned a non-2xx response\n'
+                '2 - Terminal Data returned does not match requested\n'
+                '3 - Destination given is not at requested terminal\n'
     )
 
     parser.add_argument('ferry_terminal', type=int, help='{TerminalID} referenced in API documentation here: http://www.wsdot.wa.gov/ferries/api/terminals/rest/help' )
@@ -59,7 +59,7 @@ def main():
         response = simplejson.loads(urllib2.urlopen(urllib2.Request(base_url)).read())
 
         if response['TerminalID'] != args.ferry_terminal:
-            print -2
+            print 2
             sys.exit(2)
         else:
             for trip in response['DepartingSpaces']:
@@ -83,7 +83,7 @@ def main():
             else:
                 print spaces[TerminalID],
     except:
-        print -1
+        print 1
         sys.exit(1)
 
 if __name__ == "__main__":
