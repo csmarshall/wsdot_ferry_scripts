@@ -60,32 +60,31 @@ def main():
 
         if response['TerminalID'] != args.ferry_terminal:
             print -2
-            sys.exit(1)
+            sys.exit(2)
         else:
             for trip in response['DepartingSpaces']:
                 if args.destination and (trip['SpaceForArrivalTerminals'][0]['TerminalID'] != args.destination):
                     next
 
-                TerminalName = trip['SpaceForArrivalTerminals'][0]['TerminalName']
+                TerminalID = trip['SpaceForArrivalTerminals'][0]['TerminalID']
                 DriveUpSpaceCount = trip['SpaceForArrivalTerminals'][0]['DriveUpSpaceCount']
 
-                if not TerminalName in spaces:
-                    spaces[TerminalName]['Spaces'] = DriveUpSpaceCount
-                    spaces[TerminalName]['TerminalID'] = trip['SpaceForArrivalTerminals'][0]['TerminalID']
+                if not TerminalID in spaces:
+                    spaces[TerminalID] = DriveUpSpaceCount
                 else:
                     MaxSpaceCount = trip['SpaceForArrivalTerminals'][0]['MaxSpaceCount']
                     OverbookedSpaces = MaxSpaceCount - DriveUpSpaceCount
-                    spaces[TerminalName]['Spaces'] = spaces[TerminalName]['Spaces'] - OverbookedSpaces
+                    spaces[TerminalID] = spaces[TerminalID] - OverbookedSpaces
                     #print "%s %s" % (trip['SpaceForArrivalTerminals'][0]['TerminalName'], OverbookedSpaces)
 
-        for TerminalName in spaces:
-            if args.destination and args.destination != spaces[TerminalName]['TerminalID']:
+        for TerminalID in spaces:
+            if args.destination and args.destination != TerminalID:
                 next
             else:
-                print "\'%s\':%d" % (TerminalName,spaces[TerminalName]['Spaces']),
+                print spaces[TerminalID],
     except:
-          print "'Closed':0"
-          sys.exit(1)
+        print -1
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()
